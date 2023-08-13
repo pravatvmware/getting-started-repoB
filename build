@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "Let us pretend that this is building something ... and takes 20 seconds"
+
+echo "The file name: $0."
+echo "The first argument is $1."
+
+echo "Value of environment variable ENV_VAR_1 is: $ENV_VAR_1"
+
+echo "Value of environment variable ENV_VAR_2 is: $ENV_VAR_2"
+
+
+count=0
+while [ "$count" -lt 20 ]; do
+    count=$((count + 1))
+
+    color_code=$((31 + (count % 7)))
+    printf "\e[01;${color_code}mBuilding [$count of 20]\e[00m\n"
+
+    sleep 1
+done
+
+cat >my-artifact.html <<EOF
+<html>
+<body>
+<h3>An example artifact</h3>
+<pre>
+==== ==== ====
+An example artifact, created on: $(date)
+
+Pipeline which created it: $GO_PIPELINE_NAME
+Pipeline counter was: $GO_PIPELINE_COUNTER
+==== ==== ====
+</pre>
+<body>
+</html>
+EOF
